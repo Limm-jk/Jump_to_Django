@@ -8,5 +8,5 @@
 # 의존성
 pip freeze -r > requirements.txt
 # 서버 실행
-python manage.py runserver 8888
+./runserver
 ```
