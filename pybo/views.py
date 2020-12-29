@@ -16,6 +16,13 @@ def index(request):
     # 다양하게 쓰고 싶다면 context dict에 잔뜩 담아~~
     return render(request, 'pybo/question_list.html', context)
 
+def detail(request, question_id):
+    # 내용 출력
+    question = Question.objects.get(id = question_id)
+    context = {'question' : question}
+    
+    return render(request, 'pybo/question_detail.html', context)
+
 def question_create(request):
     """
     pybo 질문등록
