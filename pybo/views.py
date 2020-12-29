@@ -60,6 +60,6 @@ def answer_create(request, question_id):
     
     # answer set은 fk로 선언하면서 생성됨
     # 여기의 request는 id가 넘어온다. post기 때문
-    question.answer_set.create(context=request.POST.get('context'), create_date=timezone.now())
+    question.answer_set.create(content=request.POST.get('content'), create_date=timezone.now())
     
     return redirect('pybo:detail', question_id=question.id)
