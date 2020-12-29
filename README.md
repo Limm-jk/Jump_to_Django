@@ -10,3 +10,5 @@ pip freeze -r > requirements.txt
 # 서버 실행
 ./runserver
 ```
+
+## 모델 설정
