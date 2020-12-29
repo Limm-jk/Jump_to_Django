@@ -13,6 +13,7 @@ def index(request):
 
     # Request는 요청 값. 앞으로 세션 유저 등등 중요한 정보를 담을 것.
     # render_to_response(template_name, context=None, content_type=None, status=None, using=None)
+    # 다양하게 쓰고 싶다면 context dict에 잔뜩 담아~~
     return render(request, 'pybo/question_list.html', context)
 
 def question_create(request):

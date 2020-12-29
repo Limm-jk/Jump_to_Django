@@ -19,5 +19,7 @@ from pybo import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
+    # 파이보라는 url을 prefix!
     path('pybo/', include('pybo.urls'))
 ]
