@@ -18,9 +18,11 @@ from django.urls import path, include
 from pybo import views
 
 urlpatterns = [
+    path('', views.index, name='index'),
+    
     path('admin/', admin.site.urls),
     
     # 파이보라는 url을 prefix!
-    path('pybo/', include('pybo.urls'))
-    path('common/', include('common.urls'))
+    path('pybo/', include('pybo.urls')),
+    path('common/', include('common.urls')),
 ]
