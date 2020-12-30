@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.utils import timezone
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 
 from .forms import QuestionForm, AnswerForm
 from .models import Question
@@ -34,6 +35,11 @@ def detail(request, question_id):
     
     return render(request, 'pybo/question_detail.html', context)
 
+# 로그인 없이 접근하면 어노테이션 실행 -> 해당 url로 이동
+# common/login/?next=/pybo/question/create/
+# 위와 같이 변함
+# 로그인 이후 next이하로 이동한다는 의미
+@login_required(login_url='common:login')
 def question_create(request):
     """
     pybo 질문등록
@@ -51,6 +57,7 @@ def question_create(request):
             # 왜 임시로 했을까?
             # post로 받은 form에 결측치가 있잖아! date!
             question = form.save(commit=False)
+            question.author = request.user
             question.create_date = timezone.now()
             
             # 결측치 메꾼 후 save
@@ -65,6 +72,7 @@ def question_create(request):
     context = {'form' : form}
     return render(request, 'pybo/question_form.html', context)
 
+@login_required(login_url='common:login')
 def answer_create(request, question_id):
     
     # answer set은 fk로 선언하면서 생성됨
