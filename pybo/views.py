@@ -1,16 +1,26 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.utils import timezone
+from django.core.paginator import Paginator
 
 from .forms import QuestionForm
 from .models import Question
 
 def index(request):
 
+    # default page는 1페이지로 하겠다.
+    page = request.GET.get('page', '1')
+    
     question_list = Question.objects.order_by('-create_date')
+    
+    # question_list를 Paginator객체로 변환시키겠다.
+    # 이 때 두번째 파라미터는 몇개씩 나눌 것인지 의미
+    paginator = Paginator(question_list, 10)
+    page_obj = paginator.get_page(page)
+    
     # orderby는 어떤 것을 따라 정렬할 지 매개변수에 의해 결정
     # 매개변수의 -는 역순으로 정렬하겠음을 의미
-    context = {'question_list' : question_list}
+    context = {'question_list' : page_obj}
 
     # Request는 요청 값. 앞으로 세션 유저 등등 중요한 정보를 담을 것.
     # render_to_response(template_name, context=None, content_type=None, status=None, using=None)
