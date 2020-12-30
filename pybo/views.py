@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.core.paginator import Paginator
 
-from .forms import QuestionForm
+from .forms import QuestionForm, AnswerForm
 from .models import Question
 
 def index(request):
@@ -66,10 +66,19 @@ def question_create(request):
     return render(request, 'pybo/question_form.html', context)
 
 def answer_create(request, question_id):
-    question = get_object_or_404(Question, pk = question_id)
     
     # answer set은 fk로 선언하면서 생성됨
-    # 여기의 request는 id가 넘어온다. post기 때문
-    question.answer_set.create(content=request.POST.get('content'), create_date=timezone.now())
-    
-    return redirect('pybo:detail', question_id=question.id)
+    question = get_object_or_404(Question, pk=question_id)
+    if request.method == "POST":
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            answer = form.save(commit=False)
+            answer.author = request.user  # 추가한 속성 author 적용
+            answer.create_date = timezone.now()
+            answer.question = question
+            answer.save()
+            return redirect('pybo:detail', question_id=question.id)
+    else:
+        form = AnswerForm()
+    context = {'question': question, 'form': form}
+    return render(request, 'pybo/question_detail.html', context)
