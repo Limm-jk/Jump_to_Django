@@ -22,4 +22,5 @@ urlpatterns = [
     
     # 파이보라는 url을 prefix!
     path('pybo/', include('pybo.urls'))
+    path('common/', include('common.urls'))
 ]
