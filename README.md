@@ -11,4 +11,10 @@ pip freeze -r > requirements.txt
 ./runserver
 ```
 
+## Docker
+```
+# 도커 연동 DB 설정
+docker-compose exec web python manage.py migrate
+```
+
 ## 모델 설정
